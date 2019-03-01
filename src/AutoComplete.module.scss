@@ -1,0 +1,30 @@
+.container {
+  position: relative;
+  width: 300px;
+  margin-left: 20px;
+
+  input {
+    width: 100%;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.hints_box {
+  position: absolute;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  list-style: none;
+  text-align: left;
+  width: 100%;
+  padding: 0px;
+
+  li {
+    padding: 8px;
+
+    &:hover {
+      background-color: lightblue;
+    }
+  }
+}
