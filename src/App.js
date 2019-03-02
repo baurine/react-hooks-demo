@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import AutoComplete from './AutoComplete';
+import Complete from './Complete';
 
 class App extends Component {
   render() {
@@ -21,7 +21,7 @@ class App extends Component {
             Learn React
           </a>
         </header>
-        <AutoComplete/>
+        <Complete/>
       </div>
     );
   }

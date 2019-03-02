@@ -1,23 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 const styles = require("./AutoComplete.module.scss")
 
-function fakeSeachAPI(text) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (Math.random() * 100 < 30) {
-        reject('500')
-      } else {
-        resolve([
-          text,
-          `${text}-${text}`,
-          `${text}-${text}-${text}`
-        ])
-      }
-    }, 200)
-  })
-}
-
-function AutoComplete() {
+function AutoComplete(props) {
   const [searchText, setSearchText] = useState('')
   const [hints, setHints] = useState([])
   const [hintsVisible, setHintsVisible] = useState(false)
@@ -37,6 +21,7 @@ function AutoComplete() {
   })
 
   function handleGlobalClick(e) {
+    // click outside the container
     if (!containerEl.current.contains(e.target)) {
       setHintsVisible(false)
     }
@@ -44,13 +29,13 @@ function AutoComplete() {
 
   function handleTextChange(e) {
     const text = e.target.value
-    setSearchText(text)
-    // delay 400ms to start search
+    changeSearchText(text)
+    // delay 400ms to start searching
     setTimeout(() => {
-      // if after 400ms, the current searchText is still text
-      // then we start to search
+      // after 400ms, if the current searchText is still same as text
+      // then we start to search really
       // else it means current searchText changed
-      // this is used to avoid frequent network requests
+      // this is used to avoid useless network requests
       if (searchTextRef.current === text) {
         search(text)
       }
@@ -58,15 +43,15 @@ function AutoComplete() {
   }
 
   function search(text) {
-    fakeSeachAPI(text)
+    props.onSearch(text)
       .then(hints => {
-        // console.log(hints)
+        // double check whether the current searchText is still same as the search text
+        // to avoid override the hints by the wrong result
         if (text === searchTextRef.current) {
           setHints(hints)
         }
       })
       .catch(err => {
-        // console.log(err)
         if (text === searchTextRef.current) {
           setHints([])
         }
@@ -78,9 +63,25 @@ function AutoComplete() {
   }
 
   function handleHintClick(hint) {
-    // console.log('click hint')
-    setSearchText(hint)
+    changeSearchText(hint)
     setHintsVisible(false)
+  }
+
+  function changeSearchText(text) {
+    setSearchText(text)
+    props.onTextChange(text)
+  }
+
+  ///////////////////////////////////
+
+  function renderHints() {
+    return (
+      <ul className={styles.hints_box}>
+        {
+          hints.map(renderHint)
+        }
+      </ul>
+    )
   }
 
   function renderHint(hint) {
@@ -93,22 +94,12 @@ function AutoComplete() {
     )
   }
 
-  function renderHints() {
-    return (
-      <ul className={styles.hints_box}>
-        {
-          hints.map(renderHint)
-        }
-      </ul>
-    )
-  }
-
   return (
     <div className={styles.container} ref={containerEl}>
       <input value={searchText}
         onChange={handleTextChange}
         onFocus={handleFoucus}
-        placeholder='search' />
+        placeholder={props.placeholder} />
       {
         hintsVisible && hints.length > 0 && renderHints()
       }
