@@ -1,0 +1,32 @@
+image: node:alpine
+
+variables:
+  PUBLIC_URL: /react-hooks-demo
+
+cache:
+  paths:
+    - node_modules
+
+stages:
+  - test
+  - publish
+
+before_script:
+  - yarn
+
+lint:
+  stage: test
+  script:
+    - eslint # ?
+
+test:
+  stage: test
+  script:
+    - jest # ?
+
+publish:
+  stage: publish
+  script:
+    - npm publish # ?
+  only:
+    - master
