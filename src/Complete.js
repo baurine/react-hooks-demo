@@ -4,7 +4,7 @@ import AutoComplete from './AutoComplete'
 function fakeSeachAPI(text) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (Math.random() * 100 < 30) {
+      if (text.length < 2 || text.length > 8) {
         reject('500')
       } else {
         resolve([
