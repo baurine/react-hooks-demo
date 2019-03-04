@@ -13,6 +13,9 @@ function AutoComplete(props) {
 
   const containerEl = useRef(null)
 
+  // `let timeoutId = null` doesn't work
+  let timeoutIdRef = useRef(null)
+
   useEffect(() => {
     document.addEventListener('click', handleGlobalClick)
     return () => {
@@ -30,19 +33,24 @@ function AutoComplete(props) {
   function handleTextChange(e) {
     const text = e.target.value
     changeSearchText(text)
-    // delay 400ms to start searching
-    setTimeout(() => {
-      // after 400ms, if the current searchText is still same as text
-      // then we start to search really
-      // else it means current searchText changed
-      // this is used to avoid useless network requests
-      if (searchTextRef.current === text) {
-        search(text)
-      }
-    }, 400)
+    // // delay 400ms to start searching
+    // setTimeout(() => {
+    //   // after 400ms, if the current searchText is still same as text
+    //   // then we start to search really
+    //   // else it means current searchText changed
+    //   // this is used to avoid useless network requests
+    //   if (searchTextRef.current === text) {
+    //     search(text)
+    //   }
+    // }, 400)
+
+    clearTimeout(timeoutIdRef.current)
+    // timeoutIdRef.current = setTimeout(() => { search(text) }, 400)
+    timeoutIdRef.current = setTimeout(search, 400, text)
   }
 
   function search(text) {
+    // console.log('start search:', text)
     props.onSearch(text)
       .then(hints => {
         // double check whether the current searchText is still same as the search text
