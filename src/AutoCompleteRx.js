@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
-import { Subject, from, of } from 'rxjs'
+import { Subject, from, of, fromEvent } from 'rxjs'
 import { tap, debounceTime, switchMap, filter } from 'rxjs/operators'
 const styles = require("./AutoComplete.module.scss")
 
@@ -39,18 +39,22 @@ function AutoComplete(props) {
   }, [subjectRef])
 
   useEffect(() => {
-    document.addEventListener('click', handleGlobalClick)
+    // document.addEventListener('click', handleGlobalClick)
+    const subscription = fromEvent(document, 'click').pipe(
+      filter(e => !containerEl.current.contains(e.target)),
+    ).subscribe((val) => setHintsVisible(false))
     return () => {
-      document.removeEventListener('click', handleGlobalClick)
+      // document.removeEventListener('click', handleGlobalClick)
+      subscription.unsubscribe()
     }
   })
 
-  function handleGlobalClick(e) {
-    // click outside the container
-    if (!containerEl.current.contains(e.target)) {
-      setHintsVisible(false)
-    }
-  }
+  // function handleGlobalClick(e) {
+  //   // click outside the container
+  //   if (!containerEl.current.contains(e.target)) {
+  //     setHintsVisible(false)
+  //   }
+  // }
 
   function handleTextChange(e) {
     const text = e.target.value
