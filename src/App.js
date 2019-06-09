@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Complete from './Complete';
-import MyInput from './MyInput';
+import React, { Component } from "react"
+import logo from "./logo.svg"
+import "./App.css"
+import Complete from "./Complete"
+import MyInput from "./MyInput"
+import WindowWidth from "./WindowWidth"
 
 class App extends Component {
   render() {
@@ -22,11 +23,12 @@ class App extends Component {
             Learn React
           </a>
         </header>
-        <Complete/>
-        <MyInput/>
+        <Complete />
+        <MyInput />
+        <WindowWidth />
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
