@@ -1,9 +1,10 @@
-import React, { Component } from "react"
-import logo from "./logo.svg"
-import "./App.css"
-import Complete from "./Complete"
-import MyInput from "./MyInput"
-import WindowWidth from "./WindowWidth"
+import React, { Component } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import Complete from './Complete'
+import MyInput from './MyInput'
+import WindowWidth from './WindowWidth'
+import PreviousValue from './PreviouseValue'
 
 class App extends Component {
   render() {
@@ -26,6 +27,7 @@ class App extends Component {
         <Complete />
         <MyInput />
         <WindowWidth />
+        <PreviousValue />
       </div>
     )
   }
